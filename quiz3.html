@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question 3 - Role Quiz</title>
+    <title>Leadapreneur - Quiz</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -91,10 +92,11 @@
             box-shadow: var(--shadow-md);
         }
         
-        .question {
+        .question-text {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: var(--space-6);
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             color: var(--text-primary);
             text-align: center;
         }
@@ -116,11 +118,11 @@
             gap: var(--space-4);
         }
         
-        .option input[type="checkbox"] {
+        .option input[type="radio"] {
             width: 20px;
             height: 20px;
             border: 2px solid var(--border);
-            border-radius: 4px;
+            border-radius: 50%;
             appearance: none;
             -webkit-appearance: none;
             cursor: pointer;
@@ -133,19 +135,18 @@
             justify-content: center;
         }
         
-        .option input[type="checkbox"]:checked {
+        .option input[type="radio"]:checked {
             background-color: var(--primary);
             border-color: var(--primary);
         }
         
-        .option input[type="checkbox"]:checked::after {
+        .option input[type="radio"]:checked::after {
             content: '';
             position: absolute;
-            width: 4px;
-            height: 8px;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            transform: translateY(-1px) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
         }
         
         .option:hover {
@@ -167,16 +168,19 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem 2rem;
             font-family: var(--font-family);
             font-weight: 700;
             font-size: 1rem;
             line-height: 1.5;
-            text-align: center;
-            text-decoration: none;
-            cursor: pointer;
+            color: #000000;
+            background-color: var(--primary);
             border: none;
-            transition: all 0.2s;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
         
         .btn-primary {
@@ -289,33 +293,34 @@
         </div>
         
         <div class="quiz-container">
-            <h1 class="question" id="question">What's your ideal work environment?</h1>
+            <h2 class="question-text">I stand resolute, owning the outcomes of my team's efforts, triumphs or setbacks, with unwavering responsibility.</h2>
             
             <div class="options" id="options">
                 <label class="option">
-                    <input type="checkbox" name="quiz-option" value="1">
-                    <span class="option-text">A dynamic space that encourages creativity and new ideas</span>
+                    <input type="radio" name="q3" value="slightly">
+                    <span class="option-text">Slightly willing</span>
                 </label>
                 <label class="option">
-                    <input type="checkbox" name="quiz-option" value="2">
-                    <span class="option-text">A collaborative setting where I can work closely with my team</span>
+                    <input type="radio" name="q3" value="moderately">
+                    <span class="option-text">Moderately willing</span>
                 </label>
                 <label class="option">
-                    <input type="checkbox" name="quiz-option" value="3">
-                    <span class="option-text">A structured environment with clear processes and goals</span>
+                    <input type="radio" name="q3" value="very">
+                    <span class="option-text">Very willing</span>
                 </label>
                 <label class="option">
-                    <input type="checkbox" name="quiz-option" value="4">
-                    <span class="option-text">A flexible space that allows for deep thinking and analysis</span>
+                    <input type="radio" name="q3" value="extremely">
+                    <span class="option-text">Extremely willing</span>
                 </label>
             </div>
             
             <div class="btn-container">
-                <a href="quiz2.html" class="btn btn-outline" style="margin-right: auto; background-color: transparent; border: 1px solid #E0E0E0; color: #222222; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(0, 0, 0, 0.02)'; this.style.borderColor='#81EDFF'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='#E0E0E0'">Previous Question</a>
-                <button id="nextBtn" class="btn" disabled>Next Question</button>
+                <a href="quiz2.html" class="btn btn-outline" style="margin-right: auto; background-color: transparent; border: 1px solid #E0E0E0; color: #222222; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(0, 0, 0, 0.02)'; this.style.borderColor='#81EDFF'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='#E0E0E0'">Previous</a>
+                <button id="nextBtn" class="btn" disabled>Next</button>
             </div>
         </div>
     </div>
+    <div class="page-indicator" style="text-align: center; margin: 1.5rem auto; color: #666666; font-size: 0.9rem; max-width: 600px; padding: 0 20px;">3 of 6</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -327,39 +332,31 @@
             // Update progress bar (3/6 steps)
             progressBar.style.width = '50%';
 
-            // Get all checkboxes
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            // Get all radio buttons
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
 
             // Option selection
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    // Uncheck all other checkboxes
-                    checkboxes.forEach(cb => {
-                        if (cb !== this) {
-                            cb.checked = false;
-                            cb.parentElement.classList.remove('selected');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Update selected state for all options
+                    radioButtons.forEach(rb => {
+                        const parent = rb.parentElement;
+                        if (rb === this) {
+                            parent.classList.add('selected');
+                            selectedOption = rb.value;
+                            nextBtn.disabled = false;
+                        } else {
+                            parent.classList.remove('selected');
                         }
                     });
-
-                    // Toggle selected class on parent label
-                    if (this.checked) {
-                        this.parentElement.classList.add('selected');
-                        selectedOption = this.value;
-                        nextBtn.disabled = false;
-                    } else {
-                        this.parentElement.classList.remove('selected');
-                        selectedOption = null;
-                        nextBtn.disabled = true;
-                    }
                 });
 
-                // Also make the entire label clickable
-                checkbox.closest('.option').addEventListener('click', function(e) {
-                    if (e.target !== checkbox) {
-                        e.preventDefault();
-                        checkbox.checked = !checkbox.checked;
+                // Make the entire label clickable
+                radio.closest('.option').addEventListener('click', function(e) {
+                    if (e.target !== radio) {
+                        radio.checked = true;
                         const event = new Event('change');
-                        checkbox.dispatchEvent(event);
+                        radio.dispatchEvent(event);
                     }
                 });
             });
