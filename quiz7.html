@@ -414,19 +414,16 @@
                 
                 if (validateForm()) {
                     // In a real app, you would submit the form data to a server
+                    // For now, just show a quick message and redirect
                     alert('Thank you! Your information has been submitted.');
-                    // Redirect to results page or show results
-                    // window.location.href = 'results.html';
+                    window.location.href = 'results.html';
                 }
             });
             
             // Skip button
             skipBtn.addEventListener('click', function() {
-                // In a real app, you might want to confirm before skipping
                 if (confirm('Are you sure you want to skip? Your information will not be saved.')) {
-                    // Redirect to results page or show results
-                    alert('Skipping form submission. Here are your results!');
-                    // window.location.href = 'results.html';
+                    window.location.href = 'results.html';
                 }
             });
             
