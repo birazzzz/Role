@@ -308,7 +308,7 @@
             </div>
             
             <div class="btn-container">
-                <a href="index.html" class="btn btn-outline" style="margin-right: auto;">Previous Question</a>
+                <a href="index.html" class="btn btn-outline" style="margin-right: auto; background-color: transparent; border: 1px solid #E0E0E0; color: #222222;">Return to Home</a>
                 <button id="nextBtn" class="btn" disabled>Next Question</button>
             </div>
         </div>
@@ -321,8 +321,8 @@
             const progressBar = document.getElementById('progressBar');
             let selectedOption = null;
 
-            // Update progress bar
-            progressBar.style.width = '10%';
+            // Update progress bar (1/6 steps)
+            progressBar.style.width = '16.67%';
 
             // Get all checkboxes
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');

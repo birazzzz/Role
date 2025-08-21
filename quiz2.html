@@ -308,7 +308,7 @@
             </div>
             
             <div class="btn-container">
-                <a href="quiz1.html" class="btn btn-outline" style="margin-right: auto;">Previous Question</a>
+                <a href="quiz1.html" class="btn btn-outline" style="margin-right: auto; background-color: transparent; border: 1px solid #E0E0E0; color: #222222; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(0, 0, 0, 0.02)'; this.style.borderColor='#81EDFF'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='#E0E0E0'">Previous Question</a>
                 <button id="nextBtn" class="btn" disabled>Next Question</button>
             </div>
         </div>
@@ -321,8 +321,8 @@
             const progressBar = document.getElementById('progressBar');
             let selectedOption = null;
 
-            // Update progress bar
-            progressBar.style.width = '60%';
+            // Update progress bar (2/6 steps)
+            progressBar.style.width = '33.33%';
 
             // Get all checkboxes
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');

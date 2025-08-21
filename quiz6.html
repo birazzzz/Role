@@ -282,7 +282,7 @@
             </div>
             
             <div class="btn-container">
-                <a href="quiz5.html" class="btn btn-outline" style="margin-right: auto;">Previous Question</a>
+                <a href="quiz5.html" class="btn btn-outline" style="margin-right: auto; background-color: transparent; border: 1px solid #E0E0E0; color: #222222; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(0, 0, 0, 0.02)'; this.style.borderColor='#81EDFF'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='#E0E0E0'">Previous Question</a>
                 <button id="nextBtn" class="btn" disabled>Next Question</button>
             </div>
         </div>
@@ -295,8 +295,8 @@
             const radioButtons = document.querySelectorAll('input[type="radio"]');
             let selectedOption = null;
 
-            // Update progress bar
-            progressBar.style.width = '100%';
+            // Update progress bar (5/6 steps - same as quiz5.html since they're part of the same step)
+            progressBar.style.width = '83.33%';
 
             // Option selection
             radioButtons.forEach(radio => {
