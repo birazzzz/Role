@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Information - Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Colors */
+            --primary: #81EDFF;
+            --background: #EDEAE7;
+            --surface: #FFFFFF;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --border: #E0E0E0;
+            --border-hover: #81EDFF;
+            --error: #FF6B6B;
+            
+            /* Typography */
+            --font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 2.5rem 0 0;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+        
+        /* Logo */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .logo {
+            display: inline-block;
+        }
+        
+        .logo-image {
+            height: 44px;
+            width: auto;
+        }
+        
+        /* Quiz Container */
+        .quiz-container {
+            background-color: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .question {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-8);
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: var(--space-6);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: var(--space-4);
+            margin-bottom: var(--space-4);
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: var(--space-2);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-family: var(--font-family);
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(129, 237, 255, 0.2);
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 0.875rem;
+            margin-top: var(--space-1);
+            display: none;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 2rem;
+            font-family: var(--font-family);
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #000000;
+            background-color: var(--primary);
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn:hover {
+            background-color: #6bd4e6;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            border-color: var(--border-hover);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: var(--space-4);
+        }
+        
+        .btn-flex-end {
+            margin-left: auto;
+        }
+        
+        /* Progress */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: var(--border);
+            border-radius: var(--radius-full);
+            margin-bottom: var(--space-6);
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 100%;
+            background-color: var(--primary);
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: var(--space-6) var(--space-4);
+            }
+            
+            .question {
+                font-size: 1.25rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo -->
+    <div class="logo-container">
+        <a href="index.html" class="logo">
+            <img src="images/logo.svg" alt="QuizMaster Logo" class="logo-image">
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="quiz-container">
+            <h1 class="question" id="question">Almost there! Tell us a bit about yourself</h1>
+            
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-col">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                        <div class="error-message" id="firstNameError">Please enter your first name</div>
+                    </div>
+                    <div class="form-col">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                        <div class="error-message" id="lastNameError">Please enter your last name</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" name="company" required>
+                    <div class="error-message" id="companyError">Please enter your company name</div>
+                </div>
+                
+                <div class="btn-container">
+                    <button type="button" id="skipBtn" class="btn btn-outline">Skip</button>
+                    <button type="submit" id="submitBtn" class="btn">Show Results</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progressBar');
+            const form = document.getElementById('contactForm');
+            const skipBtn = document.getElementById('skipBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Form fields
+            const firstName = document.getElementById('firstName');
+            const lastName = document.getElementById('lastName');
+            const email = document.getElementById('email');
+            const phone = document.getElementById('phone');
+            const company = document.getElementById('company');
+            
+            // Error messages
+            const firstNameError = document.getElementById('firstNameError');
+            const lastNameError = document.getElementById('lastNameError');
+            const emailError = document.getElementById('emailError');
+            const phoneError = document.getElementById('phoneError');
+            const companyError = document.getElementById('companyError');
+            
+            // Update progress bar
+            progressBar.style.width = '100%';
+            
+            // Email validation
+            function isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            }
+            
+            // Phone validation (simple check for at least 10 digits)
+            function isValidPhone(phone) {
+                const digits = phone.replace(/\D/g, '');
+                return digits.length >= 10;
+            }
+            
+            // Show error
+            function showError(element, errorElement, message) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                element.style.borderColor = 'var(--error)';
+            }
+            
+            // Hide error
+            function hideError(element, errorElement) {
+                errorElement.style.display = 'none';
+                element.style.borderColor = 'var(--border)';
+            }
+            
+            // Validate form
+            function validateForm() {
+                let isValid = true;
+                
+                // Validate first name
+                if (!firstName.value.trim()) {
+                    showError(firstName, firstNameError, 'Please enter your first name');
+                    isValid = false;
+                } else {
+                    hideError(firstName, firstNameError);
+                }
+                
+                // Validate last name
+                if (!lastName.value.trim()) {
+                    showError(lastName, lastNameError, 'Please enter your last name');
+                    isValid = false;
+                } else {
+                    hideError(lastName, lastNameError);
+                }
+                
+                // Validate email
+                if (!email.value.trim()) {
+                    showError(email, emailError, 'Please enter your email address');
+                    isValid = false;
+                } else if (!isValidEmail(email.value.trim())) {
+                    showError(email, emailError, 'Please enter a valid email address');
+                    isValid = false;
+                } else {
+                    hideError(email, emailError);
+                }
+                
+                // Validate phone
+                if (!phone.value.trim()) {
+                    showError(phone, phoneError, 'Please enter your phone number');
+                    isValid = false;
+                } else if (!isValidPhone(phone.value)) {
+                    showError(phone, phoneError, 'Please enter a valid phone number');
+                    isValid = false;
+                } else {
+                    hideError(phone, phoneError);
+                }
+                
+                // Validate company
+                if (!company.value.trim()) {
+                    showError(company, companyError, 'Please enter your company name');
+                    isValid = false;
+                } else {
+                    hideError(company, companyError);
+                }
+                
+                return isValid;
+            }
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    // In a real app, you would submit the form data to a server
+                    alert('Thank you! Your information has been submitted.');
+                    // Redirect to results page or show results
+                    // window.location.href = 'results.html';
+                }
+            });
+            
+            // Skip button
+            skipBtn.addEventListener('click', function() {
+                // In a real app, you might want to confirm before skipping
+                if (confirm('Are you sure you want to skip? Your information will not be saved.')) {
+                    // Redirect to results page or show results
+                    alert('Skipping form submission. Here are your results!');
+                    // window.location.href = 'results.html';
+                }
+            });
+            
+            // Real-time validation
+            firstName.addEventListener('input', () => {
+                if (firstName.value.trim()) {
+                    hideError(firstName, firstNameError);
+                }
+            });
+            
+            lastName.addEventListener('input', () => {
+                if (lastName.value.trim()) {
+                    hideError(lastName, lastNameError);
+                }
+            });
+            
+            email.addEventListener('input', () => {
+                if (email.value.trim() && isValidEmail(email.value.trim())) {
+                    hideError(email, emailError);
+                }
+            });
+            
+            phone.addEventListener('input', () => {
+                if (phone.value.trim() && isValidPhone(phone.value)) {
+                    hideError(phone, phoneError);
+                }
+            });
+            
+            company.addEventListener('input', () => {
+                if (company.value.trim()) {
+                    hideError(company, companyError);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

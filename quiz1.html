@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Discover Your Role</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        :root {
+            /* Colors */
+            --primary: #81EDFF;
+            --background: #EDEAE7;
+            --surface: #FFFFFF;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --border: #E0E0E0;
+            
+            /* Typography */
+            --font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 2.5rem 0 0;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+        
+        /* Logo */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .logo {
+            display: inline-block;
+        }
+        
+        .logo-image {
+            height: 44px; /* Increased by 10% from 40px */
+            width: auto;
+        }
+        
+        /* Quiz Container */
+        .quiz-container {
+            background-color: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .question {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-6);
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        .options {
+            display: grid;
+            gap: var(--space-4);
+            margin-bottom: var(--space-8);
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: var(--space-4) var(--space-6);
+            background-color: var(--background);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: var(--space-4);
+        }
+        
+        .option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .option input[type="checkbox"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .option input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: translateY(-1px) rotate(45deg);
+        }
+        
+        .option:hover {
+            border-color: var(--primary);
+            background-color: rgba(129, 237, 255, 0.1);
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(129, 237, 255, 0.1);
+        }
+        
+        .option-text {
+            margin-left: var(--space-4);
+            font-weight: 500;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-lg);
+            font-family: var(--font-family);
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.5;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--text-primary);
+            font-weight: 800;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            font-family: var(--font-family);
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #000000;
+            background-color: var(--primary);
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn:hover {
+            background-color: #6bd4e6;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Progress */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: var(--border);
+            border-radius: var(--radius-full);
+            margin-bottom: var(--space-6);
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 10%;
+            background-color: var(--primary);
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: var(--space-6) var(--space-4);
+            }
+            
+            .question {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo -->
+    <div class="logo-container">
+        <a href="index.html" class="logo">
+            <img src="images/logo.svg" alt="QuizMaster Logo" class="logo-image">
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="quiz-container">
+            <h1 class="question" id="question">What's your approach to solving problems?</h1>
+            
+            <div class="options" id="options">
+                <label class="option">
+                    <input type="checkbox" name="quiz-option" value="1">
+                    <span class="option-text">I like to come up with new and innovative solutions</span>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="quiz-option" value="2">
+                    <span class="option-text">I prefer working with a team to find the best solution</span>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="quiz-option" value="3">
+                    <span class="option-text">I analyze the data and follow a structured approach</span>
+                </label>
+                <label class="option">
+                    <input type="checkbox" name="quiz-option" value="4">
+                    <span class="option-text">I consider multiple perspectives before deciding</span>
+                </label>
+            </div>
+            
+            <div class="btn-container">
+                <a href="index.html" class="btn btn-outline" style="margin-right: auto;">Previous Question</a>
+                <button id="nextBtn" class="btn" disabled>Next Question</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('.option');
+            const nextBtn = document.getElementById('nextBtn');
+            const progressBar = document.getElementById('progressBar');
+            let selectedOption = null;
+
+            // Update progress bar
+            progressBar.style.width = '10%';
+
+            // Get all checkboxes
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            // Option selection
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    // Uncheck all other checkboxes
+                    checkboxes.forEach(cb => {
+                        if (cb !== this) {
+                            cb.checked = false;
+                            cb.parentElement.classList.remove('selected');
+                        }
+                    });
+
+                    // Toggle selected class on parent label
+                    if (this.checked) {
+                        this.parentElement.classList.add('selected');
+                        selectedOption = this.value;
+                        nextBtn.disabled = false;
+                    } else {
+                        this.parentElement.classList.remove('selected');
+                        selectedOption = null;
+                        nextBtn.disabled = true;
+                    }
+                });
+
+                // Also make the entire label clickable
+                checkbox.closest('.option').addEventListener('click', function(e) {
+                    if (e.target !== checkbox) {
+                        e.preventDefault();
+                        checkbox.checked = !checkbox.checked;
+                        const event = new Event('change');
+                        checkbox.dispatchEvent(event);
+                    }
+                });
+            });
+
+            // Next button click handler
+            nextBtn.addEventListener('click', function() {
+                if (selectedOption) {
+                    window.location.href = 'quiz2.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
