@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Leadapreneur Quiz</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Colors */
+            --primary: #81EDFF;
+            --background: #EDEAE7;
+            --surface: #FFFFFF;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --text-disabled: #BDBDBD;
+            --border: #DEDEDE;
+            --hover: #6BD9EC;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --overlay: rgba(0, 0, 0, 0.5);
+            
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.125rem;
+            --radius: 0.25rem;
+            --radius-md: 0.375rem;
+            --radius-lg: 0.5rem;
+            --radius-xl: 0.75rem;
+            --radius-2xl: 1rem;
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: var(--space-6);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            background-color: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            margin-bottom: var(--space-8);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: var(--space-4);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .stat-card {
+            background-color: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .stat-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: var(--space-1);
+        }
+        
+        /* Table Section */
+        .table-section {
+            background-color: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+        }
+        
+        .table-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            border: 1px solid transparent;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--text-primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border-color: var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--background);
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+        
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        
+        th, td {
+            padding: var(--space-3) var(--space-4);
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            background-color: var(--background);
+            font-weight: 600;
+            color: var(--text-primary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        tbody tr:hover {
+            background-color: rgba(129, 237, 255, 0.1);
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .role-innovator {
+            background-color: #3B82F6;
+            color: white;
+        }
+        
+        .role-coach {
+            background-color: #10B981;
+            color: white;
+        }
+        
+        .role-leader {
+            background-color: #EF4444;
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: var(--space-12);
+            color: var(--text-secondary);
+        }
+        
+        .empty-state h3 {
+            margin-bottom: var(--space-4);
+            color: var(--text-primary);
+        }
+        
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: var(--space-3);
+            margin-top: var(--space-6);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                gap: var(--space-4);
+                align-items: stretch;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            th, td {
+                padding: var(--space-2) var(--space-3);
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Quiz Analytics Dashboard</h1>
+            <p>Monitor quiz performance and user insights</p>
+        </div>
+        
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalQuizzes">0</div>
+                <div class="stat-label">Total Quizzes</div>
+                <div class="stat-description">Completed assessments</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number" id="totalInnovators">0</div>
+                <div class="stat-label">Innovators</div>
+                <div class="stat-description">Creative problem-solvers</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number" id="totalCoaches">0</div>
+                <div class="stat-label">Coaches</div>
+                <div class="stat-description">Talent developers</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number" id="totalLeaders">0</div>
+                <div class="stat-label">Leaders</div>
+                <div class="stat-description">Strategic visionaries</div>
+            </div>
+        </div>
+        
+        <!-- User Data Table -->
+        <div class="table-section">
+            <div class="table-header">
+                <h2 class="table-title">User Responses & Contact Information</h2>
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="exportToCSV()">Export to CSV</button>
+                    <button class="btn btn-secondary" onclick="refreshDashboard()">Refresh Data</button>
+                    <button class="btn btn-secondary" onclick="addSampleData()">Add Sample Data</button>
+                    <button class="btn btn-secondary" onclick="clearAllData()">Clear All Data</button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="userDataTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Role</th>
+                            <th>Q1: Daily Reality</th>
+                            <th>Q2: Working Style</th>
+                            <th>Q3: Responsibility</th>
+                            <th>Q4: Gender</th>
+                            <th>Q5/Q6: Style</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Company</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <h3>No quiz data available</h3>
+                <p>Quiz responses will appear here as users complete the assessment.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data storage and management
+        class DashboardManager {
+            constructor() {
+                this.storageKey = 'quizDashboardData';
+                this.init();
+                this.setupAutoRefresh();
+            }
+            
+            init() {
+                this.loadData();
+                this.updateStats();
+                this.renderTable();
+            }
+            
+            setupAutoRefresh() {
+                // Check for data updates every 2 seconds
+                setInterval(() => {
+                    const currentDataLength = this.data.length;
+                    this.loadData();
+                    if (this.data.length !== currentDataLength) {
+                        console.log('New quiz data detected, refreshing dashboard...');
+                        this.updateStats();
+                        this.renderTable();
+                    }
+                }, 2000);
+                
+                // Also refresh when the page becomes visible again
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden) {
+                        this.loadData();
+                        this.updateStats();
+                        this.renderTable();
+                    }
+                });
+            }
+            
+            loadData() {
+                const data = localStorage.getItem(this.storageKey);
+                this.data = data ? JSON.parse(data) : [];
+                console.log('Dashboard loaded data:', this.data.length, 'entries');
+                if (this.data.length > 0) {
+                    console.log('Latest entry:', this.data[this.data.length - 1]);
+                }
+            }
+            
+            saveData() {
+                localStorage.setItem(this.storageKey, JSON.stringify(this.data));
+            }
+            
+            addQuizResult(resultData) {
+                this.data.push({
+                    ...resultData,
+                    timestamp: new Date().toISOString(),
+                    id: Date.now().toString()
+                });
+                this.saveData();
+                this.updateStats();
+                this.renderTable();
+            }
+            
+            updateStats() {
+                const totalQuizzes = this.data.length;
+                const roleCounts = this.data.reduce((counts, entry) => {
+                    const role = entry.role?.toLowerCase();
+                    if (role === 'innovator') counts.innovators++;
+                    else if (role === 'coach') counts.coaches++;
+                    else if (role === 'leader') counts.leaders++;
+                    return counts;
+                }, { innovators: 0, coaches: 0, leaders: 0 });
+                
+                document.getElementById('totalQuizzes').textContent = totalQuizzes;
+                document.getElementById('totalInnovators').textContent = roleCounts.innovators;
+                document.getElementById('totalCoaches').textContent = roleCounts.coaches;
+                document.getElementById('totalLeaders').textContent = roleCounts.leaders;
+            }
+            
+            renderTable() {
+                const tableBody = document.getElementById('tableBody');
+                const emptyState = document.getElementById('emptyState');
+                
+                if (this.data.length === 0) {
+                    tableBody.innerHTML = '';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+                
+                emptyState.style.display = 'none';
+                
+                tableBody.innerHTML = this.data.map(entry => {
+                    const date = new Date(entry.timestamp).toLocaleDateString();
+                    const role = entry.role || 'Unknown';
+                    const roleClass = `role-${role.toLowerCase()}`;
+                    
+                    return `
+                        <tr>
+                            <td>${date}</td>
+                            <td><span class="role-badge ${roleClass}">${role}</span></td>
+                            <td>${entry.q1 || 'N/A'}</td>
+                            <td>${entry.q2 || 'N/A'}</td>
+                            <td>${entry.q3 || 'N/A'}</td>
+                            <td>${entry.q4 || 'N/A'}</td>
+                            <td>${entry.q5 || entry.q6 || 'N/A'}</td>
+                            <td>${entry.firstName || 'N/A'}</td>
+                            <td>${entry.lastName || 'N/A'}</td>
+                            <td>${entry.email || 'N/A'}</td>
+                            <td>${entry.phone || 'N/A'}</td>
+                            <td>${entry.company || 'N/A'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+            
+            exportToCSV() {
+                if (this.data.length === 0) {
+                    alert('No data to export!');
+                    return;
+                }
+                
+                const headers = [
+                    'Date', 'Role', 'Q1: Daily Reality', 'Q2: Working Style', 
+                    'Q3: Responsibility', 'Q4: Gender', 'Q5/Q6: Style',
+                    'First Name', 'Last Name', 'Email', 'Phone', 'Company'
+                ];
+                
+                const csvContent = [
+                    headers.join(','),
+                    ...this.data.map(entry => [
+                        new Date(entry.timestamp).toLocaleDateString(),
+                        entry.role || '',
+                        entry.q1 || '',
+                        entry.q2 || '',
+                        entry.q3 || '',
+                        entry.q4 || '',
+                        entry.q5 || entry.q6 || '',
+                        entry.firstName || '',
+                        entry.lastName || '',
+                        entry.email || '',
+                        entry.phone || '',
+                        entry.company || ''
+                    ].map(field => `"${field}"`).join(','))
+                ].join('\n');
+                
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `quiz-data-${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }
+            
+            clearAllData() {
+                if (confirm('Are you sure you want to clear all quiz data? This action cannot be undone.')) {
+                    this.data = [];
+                    this.saveData();
+                    this.updateStats();
+                    this.renderTable();
+                }
+            }
+        }
+        
+        // Initialize dashboard
+        const dashboard = new DashboardManager();
+        
+        // Global functions for buttons
+        function exportToCSV() {
+            dashboard.exportToCSV();
+        }
+        
+        function clearAllData() {
+            dashboard.clearAllData();
+        }
+        
+        function refreshDashboard() {
+            dashboard.loadData();
+            dashboard.updateStats();
+            dashboard.renderTable();
+            alert('Dashboard refreshed!');
+        }
+        
+        function addSampleData() {
+            const sampleData = [
+                {
+                    role: 'Innovator',
+                    q1: 'I create strategies that redefine multi-team success',
+                    q2: 'Exploring new ideas and opportunities independently',
+                    q3: 'very',
+                    q4: 'male',
+                    q5: 'classic',
+                    firstName: 'John',
+                    lastName: 'Doe',
+                    email: 'john.doe@example.com',
+                    phone: '+1234567890',
+                    company: 'Tech Innovations Inc'
+                },
+                {
+                    role: 'Coach',
+                    q1: 'I transform talent with groundbreaking programs',
+                    q2: 'Working in a small team to achieve specific goals',
+                    q3: 'extremely',
+                    q4: 'female',
+                    q6: 'type-a',
+                    firstName: 'Jane',
+                    lastName: 'Smith',
+                    email: 'jane.smith@example.com',
+                    phone: '+1987654321',
+                    company: 'Talent Development Corp'
+                },
+                {
+                    role: 'Leader',
+                    q1: 'I direct a small focused team, surpassing key goals',
+                    q2: 'Collaborating with others in a modular ecosystem structure',
+                    q3: 'extremely',
+                    q4: 'male',
+                    q5: 'modern',
+                    firstName: 'Mike',
+                    lastName: 'Johnson',
+                    email: 'mike.johnson@example.com',
+                    phone: '+1555444333',
+                    company: 'Strategic Solutions LLC'
+                }
+            ];
+            
+            sampleData.forEach(data => dashboard.addQuizResult(data));
+            alert('Sample data added successfully!');
+        }
+    </script>
+</body>
+</html>

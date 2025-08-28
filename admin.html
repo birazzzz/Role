@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Guide - Leadapreneur Quiz</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #81EDFF;
+            --background: #EDEAE7;
+            --surface: #FFFFFF;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --border: #DEDEDE;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --radius-lg: 0.5rem;
+            --radius-xl: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: var(--space-8);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background-color: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            margin-bottom: var(--space-6);
+            box-shadow: var(--shadow-md);
+        }
+        
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: var(--space-6);
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: var(--space-4);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .step {
+            margin-bottom: var(--space-4);
+            padding: var(--space-4);
+            background-color: var(--background);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .step-number {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: var(--space-4) var(--space-6);
+            background-color: var(--primary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            transition: all 0.2s;
+            margin: var(--space-4) var(--space-4) var(--space-4) 0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--background);
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+        
+        .highlight {
+            background-color: var(--warning);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .success {
+            background-color: var(--success);
+            color: white;
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            margin: var(--space-4) 0;
+        }
+        
+        code {
+            background-color: var(--background);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: var(--space-6);
+        }
+        
+        .logo-image {
+            height: 50px;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="images/logo.svg" alt="QuizMaster Logo" class="logo-image">
+            </a>
+        </div>
+        
+        <h1>Admin Guide: Accessing Quiz Data on Netlify</h1>
+        
+        <div class="card">
+            <h2>📊 Real Quiz Data Collection</h2>
+            <p>When deployed on Netlify, quiz submissions are automatically collected and can be viewed in your Netlify admin panel. Here's how to access them:</p>
+            
+            <div class="step">
+                <span class="step-number">Step 1:</span> Deploy your site to Netlify and ensure forms are working
+            </div>
+            
+            <div class="step">
+                <span class="step-number">Step 2:</span> Log into your <a href="https://app.netlify.com" target="_blank">Netlify Dashboard</a>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">Step 3:</span> Select your quiz site from the site list
+            </div>
+            
+            <div class="step">
+                <span class="step-number">Step 4:</span> Navigate to <span class="highlight">Forms</span> in the top navigation
+            </div>
+            
+            <div class="step">
+                <span class="step-number">Step 5:</span> Click on <code>quiz-submissions</code> to view all form submissions
+            </div>
+            
+            <div class="success">
+                ✅ <strong>Data Includes:</strong> User role, all 6 quiz answers, contact information, and submission timestamp
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📈 What You'll See in Netlify Forms</h2>
+            <p>Each quiz submission will contain:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>Role:</strong> Innovator, Coach, or Leader</li>
+                <li><strong>Q1-Q6:</strong> All quiz question responses</li>
+                <li><strong>Contact Info:</strong> Name, email, phone, company</li>
+                <li><strong>Timestamp:</strong> When the quiz was completed</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>💾 Export Options</h2>
+            <p>From Netlify Forms, you can:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>View individual submissions</li>
+                <li>Export all data to CSV</li>
+                <li>Set up email notifications for new submissions</li>
+                <li>Integrate with Zapier or other automation tools</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>🔧 Local Development vs Production</h2>
+            <p><strong>Local (localhost:3000):</strong> Uses browser localStorage - data only visible in local dashboard</p>
+            <p><strong>Production (Netlify):</strong> Uses Netlify Forms - data accessible in admin panel</p>
+            
+            <div style="margin-top: 20px;">
+                <a href="dashboard.html" class="btn">Local Dashboard (Development)</a>
+                <a href="https://app.netlify.com" class="btn btn-secondary" target="_blank">Netlify Admin (Production)</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🚀 Quick Links</h2>
+            <a href="index.html" class="btn">Take Quiz</a>
+            <a href="dashboard.html" class="btn btn-secondary">Local Dashboard</a>
+            <a href="debug.html" class="btn btn-secondary">Debug Tool</a>
+        </div>
+    </div>
+</body>
+</html>

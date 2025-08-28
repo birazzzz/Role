@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Data Flow - Leadapreneur Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Data Flow Debug Tool</h1>
+    
+    <div class="section">
+        <h2>Current LocalStorage Data</h2>
+        <button onclick="showCurrentData()">Show Current Data</button>
+        <button onclick="clearAllStorage()">Clear All Storage</button>
+        <pre id="currentData">Click "Show Current Data" to see localStorage contents</pre>
+    </div>
+    
+    <div class="section">
+        <h2>Simulate Quiz Completion</h2>
+        <button onclick="simulateQuizData()">Simulate Quiz Completion</button>
+        <p>This will add sample quiz answers and contact info to localStorage, then simulate the results page data saving process.</p>
+    </div>
+    
+    <div class="section">
+        <h2>Dashboard Data Check</h2>
+        <button onclick="checkDashboardData()">Check Dashboard Data</button>
+        <pre id="dashboardData">Click "Check Dashboard Data" to see dashboard-specific data</pre>
+    </div>
+    
+    <div class="section">
+        <h2>Navigation</h2>
+        <a href="index.html">Go to Quiz</a> | 
+        <a href="dashboard.html">Go to Dashboard</a> | 
+        <a href="results.html">Go to Results</a>
+    </div>
+
+    <script>
+        function showCurrentData() {
+            const allData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                allData[key] = localStorage.getItem(key);
+            }
+            document.getElementById('currentData').textContent = JSON.stringify(allData, null, 2);
+        }
+        
+        function clearAllStorage() {
+            if (confirm('Are you sure you want to clear all localStorage data?')) {
+                localStorage.clear();
+                showCurrentData();
+                alert('All localStorage data cleared!');
+            }
+        }
+        
+        function simulateQuizData() {
+            // Simulate quiz answers
+            localStorage.setItem('q1Answer', 'I create strategies that redefine multi-team success');
+            localStorage.setItem('q2Answer', 'Exploring new ideas and opportunities independently');
+            localStorage.setItem('q3Answer', 'very');
+            localStorage.setItem('q4Answer', 'male');
+            localStorage.setItem('q5Answer', 'classic');
+            localStorage.setItem('quizRole', 'Innovator');
+            
+            // Simulate contact info
+            localStorage.setItem('firstName', 'Test');
+            localStorage.setItem('lastName', 'User');
+            localStorage.setItem('email', 'test@example.com');
+            localStorage.setItem('phone', '+1234567890');
+            localStorage.setItem('company', 'Test Company');
+            
+            // Now simulate the results page saving process
+            saveQuizDataToDebug();
+            
+            alert('Quiz data simulated and saved! Check the dashboard now.');
+            showCurrentData();
+        }
+        
+        function saveQuizDataToDebug() {
+            const role = localStorage.getItem('quizRole') || 'Unknown';
+            const quizAnswers = {
+                q1: localStorage.getItem('q1Answer'),
+                q2: localStorage.getItem('q2Answer'), 
+                q3: localStorage.getItem('q3Answer'),
+                q4: localStorage.getItem('q4Answer'),
+                q5: localStorage.getItem('q5Answer'),
+                q6: localStorage.getItem('q6Answer')
+            };
+            const contactInfo = {
+                firstName: localStorage.getItem('firstName'),
+                lastName: localStorage.getItem('lastName'),
+                email: localStorage.getItem('email'),
+                phone: localStorage.getItem('phone'),
+                company: localStorage.getItem('company')
+            };
+            
+            // Combine all data
+            const quizData = {
+                role: role,
+                ...quizAnswers,
+                ...contactInfo,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Get existing dashboard data
+            const dashboardKey = 'quizDashboardData';
+            const existingData = localStorage.getItem(dashboardKey);
+            const dashboardData = existingData ? JSON.parse(existingData) : [];
+            
+            // Add new quiz data
+            dashboardData.push({
+                ...quizData,
+                id: Date.now().toString()
+            });
+            
+            // Save back to localStorage
+            localStorage.setItem(dashboardKey, JSON.stringify(dashboardData));
+            
+            console.log('Quiz data saved to dashboard:', quizData);
+        }
+        
+        function checkDashboardData() {
+            const dashboardKey = 'quizDashboardData';
+            const data = localStorage.getItem(dashboardKey);
+            const parsedData = data ? JSON.parse(data) : [];
+            
+            const output = {
+                totalEntries: parsedData.length,
+                entries: parsedData
+            };
+            
+            document.getElementById('dashboardData').textContent = JSON.stringify(output, null, 2);
+        }
+        
+        // Initialize display
+        showCurrentData();
+    </script>
+</body>
+</html>

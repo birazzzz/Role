@@ -72,7 +72,13 @@
         /* Logo */
         .logo-container {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo-image {
+            width: 110%;
+            height: auto;
+            max-width: 200px;
         }
         
         .logo {
@@ -80,7 +86,7 @@
         }
         
         .logo-image {
-            height: 44px;
+            height: 50px; /* Increased by 25% from 40px */
             width: auto;
         }
         
@@ -332,6 +338,8 @@
             // Next button click handler
             nextBtn.addEventListener('click', function() {
                 if (selectedOption) {
+                    // Save the answer for dashboard tracking
+                    localStorage.setItem('q4Answer', selectedOption);
                     // Navigate based on gender selection
                     if (selectedOption === 'male') {
                         window.location.href = 'quiz5.html';

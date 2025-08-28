@@ -76,7 +76,12 @@
         /* Logo */
         .logo-container {
             text-align: center;
-            padding: 2.5rem 0 0; /* 40px top padding */
+            padding: 2.5rem 0 1rem; /* 40px top padding, 1rem bottom padding */
+        }
+        
+        .logo-image {
+            height: 50px; /* Increased by 25% from 40px */
+            width: auto;
         }
         
         .logo {
@@ -321,6 +326,10 @@
                 <img src="images/Banner.png" alt="Discover Your Role" class="banner-image">
             </div>
             <p>You are an Innovator.</p>
+            <div class="btn-group">
+                <a href="talent-assessment.html" class="btn btn-secondary">Take Talent Capability Assessment</a>
+                <a href="index.html" class="btn btn-primary">Take Quiz Again</a>
+            </div>
         </div>
     </section>
 
@@ -416,6 +425,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Trigger confetti when page loads
             triggerConfetti();
+            
+            // Save quiz completion data for dashboard
+            saveQuizData();
+            
             // Add smooth scrolling to all links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -425,36 +438,52 @@
                     });
                 });
             });
-            
-            // In a real implementation, you would fetch the user's results here
-            // and update the page content accordingly
-            // For now, we'll use placeholder data
-            const resultData = {
-                role: "Innovator",
-                description: "As an Innovator, you thrive on creating new ideas and approaches. You're always looking for better ways to solve problems and aren't afraid to challenge the status quo. Your ability to think outside the box makes you a valuable asset in any team.",
-                strengths: [
-                    "Creative problem-solving skills",
-                    "Willingness to take risks",
-                    "Forward-thinking mindset",
-                    "Ability to see the big picture"
-                ],
-                workEnvironment: "You'll thrive in dynamic, fast-paced environments that value creativity and innovation. Look for roles that give you the freedom to experiment and implement new ideas."
+        });
+        
+        // Save quiz data for dashboard tracking
+        function saveQuizData() {
+            const role = localStorage.getItem('quizRole') || 'Unknown';
+            const quizAnswers = {
+                q1: localStorage.getItem('q1Answer'),
+                q2: localStorage.getItem('q2Answer'), 
+                q3: localStorage.getItem('q3Answer'),
+                q4: localStorage.getItem('q4Answer'),
+                q5: localStorage.getItem('q5Answer'),
+                q6: localStorage.getItem('q6Answer')
+            };
+            const contactInfo = {
+                firstName: localStorage.getItem('firstName'),
+                lastName: localStorage.getItem('lastName'),
+                email: localStorage.getItem('email'),
+                phone: localStorage.getItem('phone'),
+                company: localStorage.getItem('company')
             };
             
-            // Update the page with the result data
-            document.getElementById('resultRole').textContent = resultData.role;
-            document.getElementById('resultDescription').textContent = resultData.description;
+            // Combine all data
+            const quizData = {
+                role: role,
+                ...quizAnswers,
+                ...contactInfo,
+                timestamp: new Date().toISOString()
+            };
             
-            const strengthsList = document.getElementById('strengthsList');
-            strengthsList.innerHTML = ''; // Clear the placeholder items
-            resultData.strengths.forEach(strength => {
-                const li = document.createElement('li');
-                li.textContent = strength;
-                strengthsList.appendChild(li);
+            // Get existing dashboard data
+            const dashboardKey = 'quizDashboardData';
+            const existingData = localStorage.getItem(dashboardKey);
+            const dashboardData = existingData ? JSON.parse(existingData) : [];
+            
+            // Add new quiz data
+            dashboardData.push({
+                ...quizData,
+                id: Date.now().toString()
             });
             
-            document.getElementById('workEnvironment').textContent = resultData.workEnvironment;
-        });
+            // Save back to localStorage
+            localStorage.setItem(dashboardKey, JSON.stringify(dashboardData));
+            
+            // Debug log to verify data is being saved
+            console.log('Quiz data saved to dashboard:', quizData);
+        }
     </script>
 </body>
 </html>

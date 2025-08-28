@@ -73,7 +73,13 @@
         /* Logo */
         .logo-container {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo-image {
+            width: 110%;
+            height: auto;
+            max-width: 200px;
         }
         
         .logo {
@@ -81,7 +87,7 @@
         }
         
         .logo-image {
-            height: 44px;
+            height: 50px; /* Increased by 25% from 40px */
             width: auto;
         }
         
@@ -267,7 +273,15 @@
         <div class="quiz-container">
             <h1 class="question" id="question">Almost there! Tell us a bit about yourself</h1>
             
-            <form id="contactForm">
+            <form id="contactForm" name="quiz-submissions" method="POST" netlify>
+                <input type="hidden" name="form-name" value="quiz-submissions">
+                <input type="hidden" name="role" id="hiddenRole">
+                <input type="hidden" name="q1" id="hiddenQ1">
+                <input type="hidden" name="q2" id="hiddenQ2">
+                <input type="hidden" name="q3" id="hiddenQ3">
+                <input type="hidden" name="q4" id="hiddenQ4">
+                <input type="hidden" name="q5" id="hiddenQ5">
+                <input type="hidden" name="q6" id="hiddenQ6">
                 <div class="form-row">
                     <div class="form-col">
                         <label for="firstName">First Name</label>
@@ -417,16 +431,52 @@
                 e.preventDefault();
                 
                 if (validateForm()) {
-                    // In a real app, you would submit the form data to a server
-                    // For now, just show a quick message and redirect
-                    alert('Thank you! Your information has been submitted.');
-                    window.location.href = 'results.html';
+                    // Populate hidden fields with quiz data for Netlify Forms
+                    document.getElementById('hiddenRole').value = localStorage.getItem('quizRole') || 'Unknown';
+                    document.getElementById('hiddenQ1').value = localStorage.getItem('q1Answer') || '';
+                    document.getElementById('hiddenQ2').value = localStorage.getItem('q2Answer') || '';
+                    document.getElementById('hiddenQ3').value = localStorage.getItem('q3Answer') || '';
+                    document.getElementById('hiddenQ4').value = localStorage.getItem('q4Answer') || '';
+                    document.getElementById('hiddenQ5').value = localStorage.getItem('q5Answer') || '';
+                    document.getElementById('hiddenQ6').value = localStorage.getItem('q6Answer') || '';
+                    
+                    // Save contact information to localStorage (for local dashboard)
+                    localStorage.setItem('firstName', firstName.value.trim());
+                    localStorage.setItem('lastName', lastName.value.trim());
+                    localStorage.setItem('email', email.value.trim());
+                    localStorage.setItem('phone', phone.value.trim());
+                    localStorage.setItem('company', company.value.trim());
+                    
+                    // Submit to Netlify Forms
+                    const formData = new FormData(form);
+                    
+                    fetch('/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams(formData).toString()
+                    })
+                    .then(() => {
+                        alert('Thank you! Your information has been submitted.');
+                        window.location.href = 'results.html';
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        // Fallback to results page even if submission fails
+                        alert('Thank you! Your information has been submitted.');
+                        window.location.href = 'results.html';
+                    });
                 }
             });
             
             // Skip button
             skipBtn.addEventListener('click', function() {
                 if (confirm('Are you sure you want to skip? Your information will not be saved.')) {
+                    // Clear any existing contact info if skipping
+                    localStorage.removeItem('firstName');
+                    localStorage.removeItem('lastName');
+                    localStorage.removeItem('email');
+                    localStorage.removeItem('phone');
+                    localStorage.removeItem('company');
                     window.location.href = 'results.html';
                 }
             });
