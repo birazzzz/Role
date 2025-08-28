@@ -335,10 +335,16 @@
                 <div class="actions">
                     <button class="btn btn-primary" onclick="exportToCSV()">Export to CSV</button>
                     <button class="btn btn-secondary" onclick="refreshDashboard()">Refresh Data</button>
+                    <button class="btn btn-secondary" onclick="testDataFlow()">Test Data Flow</button>
                     <button class="btn btn-secondary" onclick="addSampleData()">Add Sample Data</button>
+                    <button class="btn btn-secondary" onclick="clearOldData()">Clear Old Data</button>
                     <button class="btn btn-secondary" onclick="clearAllData()">Clear All Data</button>
+                    <button class="btn btn-secondary" onclick="showDebugInfo()">Show Debug Info</button>
                 </div>
             </div>
+            
+            <!-- Debug Information Panel -->
+            <div id="debugPanel" style="display: none; background: #f0f0f0; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.8rem; white-space: pre-wrap;"></div>
             
             <div class="table-container">
                 <table id="userDataTable">
@@ -460,10 +466,20 @@
                 
                 emptyState.style.display = 'none';
                 
-                tableBody.innerHTML = this.data.map(entry => {
+                // Debug: Log the data structure
+                console.log('Rendering table with data:', this.data);
+                
+                tableBody.innerHTML = this.data.map((entry, index) => {
                     const date = new Date(entry.timestamp).toLocaleDateString();
                     const role = entry.role || 'Unknown';
                     const roleClass = `role-${role.toLowerCase()}`;
+                    
+                    // Debug: Log individual entry structure
+                    if (index === 0) {
+                        console.log('First entry structure:', entry);
+                        console.log('Q1 value:', entry.q1);
+                        console.log('Q2 value:', entry.q2);
+                    }
                     
                     return `
                         <tr>
@@ -554,15 +570,111 @@
             alert('Dashboard refreshed!');
         }
         
+        function clearOldData() {
+            if (confirm('Clear old data and start fresh? This will help if you have data structure issues.')) {
+                localStorage.removeItem('quizDashboardData');
+                dashboard.loadData();
+                dashboard.updateStats();
+                dashboard.renderTable();
+                alert('Old data cleared! Take a new quiz to see proper data structure.');
+            }
+        }
+        
+        function showDebugInfo() {
+            const debugPanel = document.getElementById('debugPanel');
+            
+            // Get all localStorage data
+            const allLocalStorage = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                allLocalStorage[key] = localStorage.getItem(key);
+            }
+            
+            // Get dashboard data specifically
+            const dashboardData = localStorage.getItem('quizDashboardData');
+            const parsedDashboardData = dashboardData ? JSON.parse(dashboardData) : [];
+            
+            // Test the exact same logic that results.html uses
+            const testQuizData = {
+                role: localStorage.getItem('quizRole') || 'Unknown',
+                q1: localStorage.getItem('q1Answer') || 'N/A',
+                q2: localStorage.getItem('q2Answer') || 'N/A',
+                q3: localStorage.getItem('q3Answer') || 'N/A',
+                q4: localStorage.getItem('q4Answer') || 'N/A',
+                q5: localStorage.getItem('q5Answer') || 'N/A',
+                q6: localStorage.getItem('q6Answer') || 'N/A',
+                firstName: localStorage.getItem('firstName') || 'N/A',
+                lastName: localStorage.getItem('lastName') || 'N/A',
+                email: localStorage.getItem('email') || 'N/A',
+                phone: localStorage.getItem('phone') || 'N/A',
+                company: localStorage.getItem('company') || 'N/A'
+            };
+            
+            const debugInfo = `
+=== COMPREHENSIVE DEBUG INFO ===
+
+All localStorage keys (${Object.keys(allLocalStorage).length}):
+${Object.keys(allLocalStorage).join(', ')}
+
+Quiz Answer Keys:
+- q1Answer: ${localStorage.getItem('q1Answer')}
+- q2Answer: ${localStorage.getItem('q2Answer')}
+- q3Answer: ${localStorage.getItem('q3Answer')}
+- q4Answer: ${localStorage.getItem('q4Answer')}
+- q5Answer: ${localStorage.getItem('q5Answer')}
+- q6Answer: ${localStorage.getItem('q6Answer')}
+
+Contact Info Keys:
+- firstName: ${localStorage.getItem('firstName')}
+- lastName: ${localStorage.getItem('lastName')}
+- email: ${localStorage.getItem('email')}
+- phone: ${localStorage.getItem('phone')}
+- company: ${localStorage.getItem('company')}
+
+Role:
+- quizRole: ${localStorage.getItem('quizRole')}
+
+Test Quiz Data Structure (what should be saved):
+${JSON.stringify(testQuizData, null, 2)}
+
+Actual Dashboard Data (${parsedDashboardData.length} entries):
+${JSON.stringify(parsedDashboardData, null, 2)}
+
+=== ANALYSIS ===
+${parsedDashboardData.length === 0 ? 'No dashboard data found!' : 
+  parsedDashboardData.map((entry, i) => 
+    `Entry ${i + 1}:
+  - Role: ${entry.role}
+  - Q1 (${typeof entry.q1}): "${entry.q1}"
+  - Q2 (${typeof entry.q2}): "${entry.q2}"
+  - Q3 (${typeof entry.q3}): "${entry.q3}"
+  - Q4 (${typeof entry.q4}): "${entry.q4}"
+  - Q5 (${typeof entry.q5}): "${entry.q5}"
+  - Q6 (${typeof entry.q6}): "${entry.q6}"
+  - First Name: "${entry.firstName}"
+  - Last Name: "${entry.lastName}"
+  - Email: "${entry.email}"`
+  ).join('\n\n')}
+
+=== RECOMMENDATIONS ===
+1. Clear all data and try debug simulation
+2. Take a fresh quiz from start to finish
+3. Check browser console for save/load messages
+            `;
+            
+            debugPanel.textContent = debugInfo;
+            debugPanel.style.display = debugPanel.style.display === 'none' ? 'block' : 'none';
+        }
+        
         function addSampleData() {
             const sampleData = [
                 {
                     role: 'Innovator',
                     q1: 'I create strategies that redefine multi-team success',
                     q2: 'Exploring new ideas and opportunities independently',
-                    q3: 'very',
-                    q4: 'male',
-                    q5: 'classic',
+                    q3: 'Very willing',
+                    q4: 'Male',
+                    q5: 'Classic',
                     firstName: 'John',
                     lastName: 'Doe',
                     email: 'john.doe@example.com',
@@ -573,9 +685,9 @@
                     role: 'Coach',
                     q1: 'I transform talent with groundbreaking programs',
                     q2: 'Working in a small team to achieve specific goals',
-                    q3: 'extremely',
-                    q4: 'female',
-                    q6: 'type-a',
+                    q3: 'Extremely willing',
+                    q4: 'Female',
+                    q6: 'Type A',
                     firstName: 'Jane',
                     lastName: 'Smith',
                     email: 'jane.smith@example.com',
@@ -586,9 +698,9 @@
                     role: 'Leader',
                     q1: 'I direct a small focused team, surpassing key goals',
                     q2: 'Collaborating with others in a modular ecosystem structure',
-                    q3: 'extremely',
-                    q4: 'male',
-                    q5: 'modern',
+                    q3: 'Extremely willing',
+                    q4: 'Male',
+                    q5: 'Modern',
                     firstName: 'Mike',
                     lastName: 'Johnson',
                     email: 'mike.johnson@example.com',
@@ -599,6 +711,58 @@
             
             sampleData.forEach(data => dashboard.addQuizResult(data));
             alert('Sample data added successfully!');
+        }
+        
+        function testDataFlow() {
+            // Manually set localStorage like a quiz would
+            localStorage.setItem('q1Answer', 'TEST: I create strategies that redefine multi-team success');
+            localStorage.setItem('q2Answer', 'TEST: Exploring new ideas and opportunities independently');
+            localStorage.setItem('q3Answer', 'TEST: Very willing');
+            localStorage.setItem('q4Answer', 'TEST: Male');
+            localStorage.setItem('q5Answer', 'TEST: Classic');
+            localStorage.setItem('quizRole', 'TEST-Innovator');
+            localStorage.setItem('firstName', 'TEST-John');
+            localStorage.setItem('lastName', 'TEST-Doe');
+            localStorage.setItem('email', 'test@example.com');
+            localStorage.setItem('phone', '+1234567890');
+            localStorage.setItem('company', 'TEST Company');
+            
+            // Now simulate the results page save
+            const role = localStorage.getItem('quizRole') || 'Unknown';
+            const quizData = {
+                role: role,
+                q1: localStorage.getItem('q1Answer') || 'N/A',
+                q2: localStorage.getItem('q2Answer') || 'N/A',
+                q3: localStorage.getItem('q3Answer') || 'N/A',
+                q4: localStorage.getItem('q4Answer') || 'N/A',
+                q5: localStorage.getItem('q5Answer') || 'N/A',
+                q6: localStorage.getItem('q6Answer') || 'N/A',
+                firstName: localStorage.getItem('firstName') || 'N/A',
+                lastName: localStorage.getItem('lastName') || 'N/A',
+                email: localStorage.getItem('email') || 'N/A',
+                phone: localStorage.getItem('phone') || 'N/A',
+                company: localStorage.getItem('company') || 'N/A',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save to dashboard
+            const dashboardKey = 'quizDashboardData';
+            const existingData = localStorage.getItem(dashboardKey);
+            const dashboardData = existingData ? JSON.parse(existingData) : [];
+            
+            dashboardData.push({
+                ...quizData,
+                id: Date.now().toString()
+            });
+            
+            localStorage.setItem(dashboardKey, JSON.stringify(dashboardData));
+            
+            // Refresh dashboard
+            dashboard.loadData();
+            dashboard.updateStats();
+            dashboard.renderTable();
+            
+            alert('Test data saved! Check the dashboard table.');
         }
     </script>
 </body>

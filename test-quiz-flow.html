@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Flow Test</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 12px 24px;
+            margin: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Flow Test & Debug Tool</h1>
+        <p>This tool simulates the complete quiz flow to test data saving and dashboard integration.</p>
+
+        <div class="section">
+            <h3>1. Simulate Complete Quiz</h3>
+            <button onclick="simulateCompleteQuiz()">Simulate Full Quiz Flow</button>
+            <button onclick="clearAllData()">Clear All Data</button>
+            <div id="simulationStatus"></div>
+        </div>
+
+        <div class="section">
+            <h3>2. Check Current Data</h3>
+            <button onclick="checkCurrentData()">Check localStorage Data</button>
+            <button onclick="checkDashboardData()">Check Dashboard Data</button>
+            <pre id="dataOutput">Click buttons above to view data...</pre>
+        </div>
+
+        <div class="section">
+            <h3>3. Dashboard Actions</h3>
+            <button onclick="window.location.href='dashboard.html'">Open Dashboard</button>
+            <button onclick="window.location.href='diagnostic.html'">Open Diagnostic Tool</button>
+        </div>
+
+        <div class="section">
+            <h3>4. Manual Test Flow</h3>
+            <button onclick="window.location.href='index.html'">Start Actual Quiz</button>
+            <button onclick="window.location.href='results.html'">View Results Page</button>
+        </div>
+
+        <div class="section">
+            <h3>5. Debug Log</h3>
+            <pre id="debugLog">Debug information will appear here...</pre>
+        </div>
+    </div>
+
+    <script>
+        function log(message) {
+            const debugLog = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            debugLog.textContent += `[${timestamp}] ${message}\n`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+            console.log(message);
+        }
+
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function simulateCompleteQuiz() {
+            log('=== Starting complete quiz simulation ===');
+            
+            // Clear any existing data first
+            localStorage.removeItem('quizDashboardData');
+            localStorage.removeItem('quizRole');
+            for (let i = 1; i <= 6; i++) {
+                localStorage.removeItem(`q${i}Answer`);
+            }
+            ['firstName', 'lastName', 'email', 'phone', 'company'].forEach(key => {
+                localStorage.removeItem(key);
+            });
+            
+            log('Cleared existing data');
+
+            // Simulate quiz answers being saved (like the quiz pages do)
+            const quizAnswers = {
+                q1Answer: 'I create strategies that redefine multi-team success',
+                q2Answer: 'Exploring new ideas and opportunities independently',
+                q3Answer: 'Very willing',
+                q4Answer: 'Male',
+                q5Answer: 'Classic',
+                q6Answer: 'Type A'
+            };
+
+            Object.entries(quizAnswers).forEach(([key, value]) => {
+                localStorage.setItem(key, value);
+                log(`Saved ${key}: ${value}`);
+            });
+
+            // Simulate role calculation (this would happen in results.html)
+            localStorage.setItem('quizRole', 'Innovator');
+            log('Set role: Innovator');
+
+            // Simulate contact form submission
+            const contactInfo = {
+                firstName: 'Test',
+                lastName: 'User',
+                email: 'test@example.com',
+                phone: '+1234567890',
+                company: 'Test Company'
+            };
+
+            Object.entries(contactInfo).forEach(([key, value]) => {
+                localStorage.setItem(key, value);
+                log(`Saved ${key}: ${value}`);
+            });
+
+            // Now simulate the results.html saveQuizData function exactly
+            log('=== Simulating results.html saveQuizData function ===');
+            
+            const role = localStorage.getItem('quizRole') || 'Unknown';
+            log(`Role found: ${role}`);
+            
+            // Get quiz answers with detailed logging
+            const q1Answer = localStorage.getItem('q1Answer');
+            const q2Answer = localStorage.getItem('q2Answer');
+            const q3Answer = localStorage.getItem('q3Answer');
+            const q4Answer = localStorage.getItem('q4Answer');
+            const q5Answer = localStorage.getItem('q5Answer');
+            const q6Answer = localStorage.getItem('q6Answer');
+            
+            log(`Quiz answers: q1=${q1Answer}, q2=${q2Answer}, q3=${q3Answer}, q4=${q4Answer}, q5=${q5Answer}, q6=${q6Answer}`);
+            
+            // Get contact information
+            const firstName = localStorage.getItem('firstName');
+            const lastName = localStorage.getItem('lastName');
+            const email = localStorage.getItem('email');
+            const phone = localStorage.getItem('phone');
+            const company = localStorage.getItem('company');
+            
+            log(`Contact info: ${firstName} ${lastName}, ${email}, ${phone}, ${company}`);
+            
+            // Create quiz data object
+            const quizData = {
+                role: role,
+                q1: q1Answer || 'N/A',
+                q2: q2Answer || 'N/A',
+                q3: q3Answer || 'N/A',
+                q4: q4Answer || 'N/A',
+                q5: q5Answer || 'N/A',
+                q6: q6Answer || 'N/A',
+                firstName: firstName || 'N/A',
+                lastName: lastName || 'N/A',
+                email: email || 'N/A',
+                phone: phone || 'N/A',
+                company: company || 'N/A',
+                timestamp: new Date().toISOString()
+            };
+            
+            log('Created quiz data object:');
+            log(JSON.stringify(quizData, null, 2));
+            
+            // Save to dashboard data
+            const dashboardKey = 'quizDashboardData';
+            const existingData = localStorage.getItem(dashboardKey);
+            let dashboardData = existingData ? JSON.parse(existingData) : [];
+            
+            const newEntry = {
+                ...quizData,
+                id: Date.now().toString() + '_sim'
+            };
+            
+            dashboardData.push(newEntry);
+            localStorage.setItem(dashboardKey, JSON.stringify(dashboardData));
+            
+            log(`Saved to dashboard! Total entries: ${dashboardData.length}`);
+            log('Latest entry saved:');
+            log(JSON.stringify(newEntry, null, 2));
+
+            showStatus('simulationStatus', 'Quiz simulation completed successfully! Check the dashboard to see if data appears correctly.', 'success');
+        }
+
+        function clearAllData() {
+            // Clear all quiz-related localStorage
+            localStorage.removeItem('quizDashboardData');
+            localStorage.removeItem('quizRole');
+            for (let i = 1; i <= 6; i++) {
+                localStorage.removeItem(`q${i}Answer`);
+            }
+            ['firstName', 'lastName', 'email', 'phone', 'company'].forEach(key => {
+                localStorage.removeItem(key);
+            });
+            
+            log('All quiz data cleared from localStorage');
+            showStatus('simulationStatus', 'All data cleared successfully.', 'success');
+        }
+
+        function checkCurrentData() {
+            const output = document.getElementById('dataOutput');
+            
+            const allQuizData = {
+                role: localStorage.getItem('quizRole'),
+                answers: {
+                    q1: localStorage.getItem('q1Answer'),
+                    q2: localStorage.getItem('q2Answer'),
+                    q3: localStorage.getItem('q3Answer'),
+                    q4: localStorage.getItem('q4Answer'),
+                    q5: localStorage.getItem('q5Answer'),
+                    q6: localStorage.getItem('q6Answer')
+                },
+                contact: {
+                    firstName: localStorage.getItem('firstName'),
+                    lastName: localStorage.getItem('lastName'),
+                    email: localStorage.getItem('email'),
+                    phone: localStorage.getItem('phone'),
+                    company: localStorage.getItem('company')
+                }
+            };
+            
+            output.textContent = '=== CURRENT LOCALSTORAGE DATA ===\n\n' + JSON.stringify(allQuizData, null, 2);
+            log('Checked current localStorage data');
+        }
+
+        function checkDashboardData() {
+            const output = document.getElementById('dataOutput');
+            const dashboardData = localStorage.getItem('quizDashboardData');
+            
+            if (dashboardData) {
+                try {
+                    const parsed = JSON.parse(dashboardData);
+                    output.textContent = '=== DASHBOARD DATA ===\n\n' + 
+                                       `Total entries: ${parsed.length}\n\n` +
+                                       JSON.stringify(parsed, null, 2);
+                    log(`Found ${parsed.length} dashboard entries`);
+                } catch (e) {
+                    output.textContent = '=== ERROR ===\n\nCannot parse dashboard data: ' + e.message;
+                    log(`Error parsing dashboard data: ${e.message}`);
+                }
+            } else {
+                output.textContent = '=== NO DASHBOARD DATA ===\n\nNo dashboard data found in localStorage.';
+                log('No dashboard data found');
+            }
+        }
+
+        // Auto-check data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Test page loaded');
+            checkCurrentData();
+        });
+    </script>
+</body>
+</html>

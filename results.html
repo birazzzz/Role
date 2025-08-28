@@ -442,47 +442,103 @@
         
         // Save quiz data for dashboard tracking
         function saveQuizData() {
-            const role = localStorage.getItem('quizRole') || 'Unknown';
-            const quizAnswers = {
-                q1: localStorage.getItem('q1Answer'),
-                q2: localStorage.getItem('q2Answer'), 
-                q3: localStorage.getItem('q3Answer'),
-                q4: localStorage.getItem('q4Answer'),
-                q5: localStorage.getItem('q5Answer'),
-                q6: localStorage.getItem('q6Answer')
-            };
-            const contactInfo = {
-                firstName: localStorage.getItem('firstName'),
-                lastName: localStorage.getItem('lastName'),
-                email: localStorage.getItem('email'),
-                phone: localStorage.getItem('phone'),
-                company: localStorage.getItem('company')
-            };
+            console.log('=== Starting saveQuizData function ===');
             
-            // Combine all data
+            const role = localStorage.getItem('quizRole') || 'Unknown';
+            console.log('Role found:', role);
+            
+            // Get quiz answers with detailed logging
+            const q1Answer = localStorage.getItem('q1Answer');
+            const q2Answer = localStorage.getItem('q2Answer');
+            const q3Answer = localStorage.getItem('q3Answer');
+            const q4Answer = localStorage.getItem('q4Answer');
+            const q5Answer = localStorage.getItem('q5Answer');
+            const q6Answer = localStorage.getItem('q6Answer');
+            
+            console.log('Raw quiz answers from localStorage:');
+            console.log('q1Answer:', q1Answer);
+            console.log('q2Answer:', q2Answer);
+            console.log('q3Answer:', q3Answer);
+            console.log('q4Answer:', q4Answer);
+            console.log('q5Answer:', q5Answer);
+            console.log('q6Answer:', q6Answer);
+            
+            // Get contact information
+            const firstName = localStorage.getItem('firstName');
+            const lastName = localStorage.getItem('lastName');
+            const email = localStorage.getItem('email');
+            const phone = localStorage.getItem('phone');
+            const company = localStorage.getItem('company');
+            
+            console.log('Contact info:');
+            console.log('firstName:', firstName);
+            console.log('lastName:', lastName);
+            console.log('email:', email);
+            console.log('phone:', phone);
+            console.log('company:', company);
+            
+            // Create quiz data object with explicit checks
             const quizData = {
                 role: role,
-                ...quizAnswers,
-                ...contactInfo,
+                q1: q1Answer || 'N/A',
+                q2: q2Answer || 'N/A',
+                q3: q3Answer || 'N/A',
+                q4: q4Answer || 'N/A',
+                q5: q5Answer || 'N/A',
+                q6: q6Answer || 'N/A',
+                firstName: firstName || 'N/A',
+                lastName: lastName || 'N/A',
+                email: email || 'N/A',
+                phone: phone || 'N/A',
+                company: company || 'N/A',
                 timestamp: new Date().toISOString()
             };
+            
+            console.log('=== Final quiz data object ===');
+            console.log(JSON.stringify(quizData, null, 2));
             
             // Get existing dashboard data
             const dashboardKey = 'quizDashboardData';
             const existingData = localStorage.getItem(dashboardKey);
-            const dashboardData = existingData ? JSON.parse(existingData) : [];
+            let dashboardData;
             
-            // Add new quiz data
-            dashboardData.push({
+            try {
+                dashboardData = existingData ? JSON.parse(existingData) : [];
+                console.log('Existing dashboard data loaded, count:', dashboardData.length);
+            } catch (e) {
+                console.error('Error parsing existing dashboard data:', e);
+                dashboardData = [];
+            }
+            
+            // Add new quiz data with unique ID
+            const newEntry = {
                 ...quizData,
-                id: Date.now().toString()
-            });
+                id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9)
+            };
+            
+            dashboardData.push(newEntry);
+            console.log('New entry added to dashboard data:', newEntry);
             
             // Save back to localStorage
-            localStorage.setItem(dashboardKey, JSON.stringify(dashboardData));
-            
-            // Debug log to verify data is being saved
-            console.log('Quiz data saved to dashboard:', quizData);
+            try {
+                localStorage.setItem(dashboardKey, JSON.stringify(dashboardData));
+                console.log('=== Data successfully saved to localStorage ===');
+                console.log('Total entries now:', dashboardData.length);
+                
+                // Verify the save worked
+                const verification = localStorage.getItem(dashboardKey);
+                if (verification) {
+                    const parsed = JSON.parse(verification);
+                    console.log('Verification: Data saved correctly, entries:', parsed.length);
+                    if (parsed.length > 0) {
+                        console.log('Latest entry verification:', parsed[parsed.length - 1]);
+                    }
+                } else {
+                    console.error('ERROR: Data was not saved to localStorage!');
+                }
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+            }
         }
     </script>
 </body>

@@ -335,8 +335,13 @@
             // Next button click handler
             nextBtn.addEventListener('click', function() {
                 if (selectedOption) {
-                    // Save the answer for dashboard tracking
-                    localStorage.setItem('q5Answer', selectedOption);
+                    // Get the text of the selected answer (for image options, use the caption)
+                    const selectedRadio = document.querySelector('input[name="image-option"]:checked');
+                    const answerText = selectedRadio ? selectedRadio.parentElement.querySelector('.image-caption').textContent : selectedOption;
+                    
+                    // Save the answer text for dashboard tracking
+                    localStorage.setItem('q5Answer', answerText);
+                    console.log('Q5 Answer saved:', answerText);
                     window.location.href = 'quiz7.html';
                 }
             });

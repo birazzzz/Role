@@ -360,8 +360,13 @@
             // Next button click handler
             nextBtn.addEventListener('click', function() {
                 if (selectedOption) {
-                    // Save the answer for dashboard tracking
-                    localStorage.setItem('q6Answer', selectedOption);
+                    // Get the text of the selected answer (for image options, use the caption)
+                    const selectedRadio = document.querySelector('input[name="image-option"]:checked');
+                    const answerText = selectedRadio ? selectedRadio.parentElement.querySelector('.image-caption').textContent : selectedOption;
+                    
+                    // Save the answer text for dashboard tracking
+                    localStorage.setItem('q6Answer', answerText);
+                    console.log('Q6 Answer saved:', answerText);
                     // Navigate to the next question
                     window.location.href = 'quiz7.html';
                 }

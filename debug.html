@@ -77,12 +77,12 @@
         }
         
         function simulateQuizData() {
-            // Simulate quiz answers
+            // Simulate quiz answers with actual text content
             localStorage.setItem('q1Answer', 'I create strategies that redefine multi-team success');
             localStorage.setItem('q2Answer', 'Exploring new ideas and opportunities independently');
-            localStorage.setItem('q3Answer', 'very');
-            localStorage.setItem('q4Answer', 'male');
-            localStorage.setItem('q5Answer', 'classic');
+            localStorage.setItem('q3Answer', 'Very willing');
+            localStorage.setItem('q4Answer', 'Male');
+            localStorage.setItem('q5Answer', 'Classic');
             localStorage.setItem('quizRole', 'Innovator');
             
             // Simulate contact info
@@ -101,6 +101,8 @@
         
         function saveQuizDataToDebug() {
             const role = localStorage.getItem('quizRole') || 'Unknown';
+            
+            // Get quiz answers - these are stored with 'Answer' suffix
             const quizAnswers = {
                 q1: localStorage.getItem('q1Answer'),
                 q2: localStorage.getItem('q2Answer'), 
@@ -109,6 +111,7 @@
                 q5: localStorage.getItem('q5Answer'),
                 q6: localStorage.getItem('q6Answer')
             };
+            
             const contactInfo = {
                 firstName: localStorage.getItem('firstName'),
                 lastName: localStorage.getItem('lastName'),
@@ -117,11 +120,20 @@
                 company: localStorage.getItem('company')
             };
             
-            // Combine all data
+            // Create properly structured data for dashboard
             const quizData = {
                 role: role,
-                ...quizAnswers,
-                ...contactInfo,
+                q1: quizAnswers.q1 || 'N/A',
+                q2: quizAnswers.q2 || 'N/A',
+                q3: quizAnswers.q3 || 'N/A',
+                q4: quizAnswers.q4 || 'N/A',
+                q5: quizAnswers.q5 || 'N/A',
+                q6: quizAnswers.q6 || 'N/A',
+                firstName: contactInfo.firstName || 'N/A',
+                lastName: contactInfo.lastName || 'N/A',
+                email: contactInfo.email || 'N/A',
+                phone: contactInfo.phone || 'N/A',
+                company: contactInfo.company || 'N/A',
                 timestamp: new Date().toISOString()
             };
             
@@ -139,7 +151,8 @@
             // Save back to localStorage
             localStorage.setItem(dashboardKey, JSON.stringify(dashboardData));
             
-            console.log('Quiz data saved to dashboard:', quizData);
+            console.log('Debug: Quiz data saved to dashboard:', quizData);
+            console.log('Debug: Raw answers from localStorage:', quizAnswers);
         }
         
         function checkDashboardData() {

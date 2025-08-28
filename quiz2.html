@@ -368,8 +368,13 @@
             // Next button click handler
             nextBtn.addEventListener('click', function() {
                 if (selectedOption) {
-                    // Save the answer for dashboard tracking
-                    localStorage.setItem('q2Answer', selectedOption);
+                    // Get the text of the selected answer
+                    const selectedRadio = document.querySelector('input[name="q2"]:checked');
+                    const answerText = selectedRadio ? selectedRadio.parentElement.querySelector('.option-text').textContent : selectedOption;
+                    
+                    // Save the answer text for dashboard tracking
+                    localStorage.setItem('q2Answer', answerText);
+                    console.log('Q2 Answer saved:', answerText);
                     window.location.href = 'quiz3.html';
                 }
             });

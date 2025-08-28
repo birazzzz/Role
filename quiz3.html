@@ -370,8 +370,13 @@
             // Next button click handler
             nextBtn.addEventListener('click', function() {
                 if (selectedOption) {
-                    // Save the answer for dashboard tracking
-                    localStorage.setItem('q3Answer', selectedOption);
+                    // Get the text of the selected answer
+                    const selectedRadio = document.querySelector('input[name="q3"]:checked');
+                    const answerText = selectedRadio ? selectedRadio.parentElement.querySelector('.option-text').textContent : selectedOption;
+                    
+                    // Save the answer text for dashboard tracking
+                    localStorage.setItem('q3Answer', answerText);
+                    console.log('Q3 Answer saved:', answerText);
                     // Save the answer and go to the next question
                     window.location.href = 'quiz4.html';
                 }
