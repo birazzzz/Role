@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talent Assessment - Question 26</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #81EDFF;
+            --background: #EDEAE7;
+            --surface: #FFFFFF;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --border: #E0E0E0;
+            --font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 2.5rem 0 0;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo-image {
+            height: 50px;
+            width: auto;
+        }
+        
+        .quiz-container {
+            background-color: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        .options {
+            display: grid;
+            gap: var(--space-4);
+            margin-bottom: var(--space-8);
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: var(--space-4) var(--space-6);
+            background-color: var(--background);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: var(--space-4);
+        }
+        
+        .option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .option input[type="radio"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .option input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        
+        .option:hover, .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(129, 237, 255, 0.1);
+        }
+        
+        .option-text {
+            margin-left: var(--space-4);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 2rem;
+            font-family: var(--font-family);
+            font-weight: 700;
+            font-size: 1rem;
+            color: #000000;
+            background-color: var(--primary);
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn:hover {
+            background-color: #6bd4e6;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: var(--border);
+            border-radius: var(--radius-full);
+            margin-bottom: var(--space-6);
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 86.67%;
+            background-color: var(--primary);
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <a href="talent-assessment.html">
+            <img src="images/logo.svg" alt="Leadapreneur Logo" class="logo-image">
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        
+        <div class="quiz-container">
+            <h2 class="question-text">Your approach to customer/client relationships is:</h2>
+            
+            <div class="options">
+                                <label class="option">
+                    <input type="radio" name="talent26" value="consultative">
+                    <span class="option-text">Consultative partnership approach</span>
+                </label>
+                <label class="option">
+                    <input type="radio" name="talent26" value="service">
+                    <span class="option-text">Focus on exceptional service delivery</span>
+                </label>
+                <label class="option">
+                    <input type="radio" name="talent26" value="solutions">
+                    <span class="option-text">Problem-solving and solution-oriented</span>
+                </label>
+                <label class="option">
+                    <input type="radio" name="talent26" value="long-term">
+                    <span class="option-text">Building long-term strategic relationships</span>
+                </label>
+            </div>
+            
+            <div class="btn-container">
+                <a href="talent-q25.html" class="btn" style="background-color: transparent; border: 1px solid #E0E0E0; color: #222222;">Previous</a>
+                <button id="nextBtn" class="btn" disabled>Next</button>
+            </div>
+        </div>
+    </div>
+    <div class="page-indicator" style="text-align: center; margin: 1.5rem auto; color: #666666; font-size: 0.9rem;">26 of 30</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nextBtn = document.getElementById('nextBtn');
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            let selectedOption = null;
+
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    radioButtons.forEach(rb => {
+                        const parent = rb.parentElement;
+                        if (rb === this) {
+                            parent.classList.add('selected');
+                            selectedOption = rb.value;
+                            nextBtn.disabled = false;
+                        } else {
+                            parent.classList.remove('selected');
+                        }
+                    });
+                });
+
+                radio.closest('.option').addEventListener('click', function(e) {
+                    if (e.target !== radio) {
+                        radio.checked = true;
+                        const event = new Event('change');
+                        radio.dispatchEvent(event);
+                    }
+                });
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (selectedOption) {
+                    const selectedRadio = document.querySelector('input[name="talent26"]:checked');
+                    const answerText = selectedRadio ? selectedRadio.parentElement.querySelector('.option-text').textContent : selectedOption;
+                    localStorage.setItem('talent26Answer', answerText);
+                    console.log('Talent Q26 Answer saved:', answerText);
+                    window.location.href = 'talent-q27.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

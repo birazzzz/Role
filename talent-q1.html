@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leadapreneur - Quiz</title>
+    <title>Talent Assessment - Question 1</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,6 @@
             --text-primary: #222222;
             --text-secondary: #666666;
             --border: #E0E0E0;
-            --border-hover: #81EDFF;
             
             /* Typography */
             --font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -45,7 +44,6 @@
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         
         * {
@@ -75,18 +73,12 @@
             margin-bottom: 1.5rem;
         }
         
-        .logo-image {
-            width: 110%;
-            height: auto;
-            max-width: 200px;
-        }
-        
         .logo {
             display: inline-block;
         }
         
         .logo-image {
-            height: 50px; /* Increased by 25% from 40px */
+            height: 50px;
             width: auto;
         }
         
@@ -98,81 +90,78 @@
             box-shadow: var(--shadow-md);
         }
         
-        .question {
+        .question-text {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: var(--space-8);
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             color: var(--text-primary);
             text-align: center;
         }
         
-        .image-options {
+        .options {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-6);
-            margin: 0 0 var(--space-8) 0;
-            align-items: start;
+            gap: var(--space-4);
+            margin-bottom: var(--space-8);
         }
         
-        .image-option {
+        .option {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .image-placeholder {
-            width: 100%;
-            height: 180px;
+            padding: var(--space-4) var(--space-6);
             background-color: var(--background);
             border: 2px solid var(--border);
             border-radius: var(--radius-lg);
-            margin-bottom: var(--space-3);
+            cursor: pointer;
             transition: all 0.2s;
+            gap: var(--space-4);
+        }
+        
+        .option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
             position: relative;
-            overflow: hidden;
-        }
-        
-        .image-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .image-option input[type="radio"]:checked + .quiz-image {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(129, 237, 255, 0.5);
-        }
-        
-        .image-option:hover .image-placeholder {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
-        }
-        
-        .quiz-image {
-            width: 75%;
-            height: auto;
-            object-fit: contain;
-            border-radius: var(--radius-lg);
-            margin: 0 auto var(--space-3) auto;
-            border: 2px solid transparent;
-            transition: all 0.2s ease;
-            aspect-ratio: 1/1.5; /* Common aspect ratio for portrait images */
-        }
-        
-        .image-option {
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
         }
         
-        .image-caption {
-            font-size: 0.95rem;
+        .option input[type="radio"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .option input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        
+        .option:hover {
+            border-color: var(--primary);
+            background-color: rgba(129, 237, 255, 0.1);
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(129, 237, 255, 0.1);
+        }
+        
+        .option-text {
+            margin-left: var(--space-4);
             font-weight: 500;
-            color: var(--text-secondary);
-            text-align: center;
+            font-size: 1.1rem;
         }
         
         .btn {
@@ -200,11 +189,6 @@
             box-shadow: var(--shadow);
         }
         
-        .btn:active {
-            transform: translateY(0);
-            box-shadow: var(--shadow-sm);
-        }
-        
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -216,10 +200,6 @@
             display: flex;
             justify-content: space-between;
             margin-top: 2rem;
-        }
-        
-        .btn-previous {
-            margin-right: auto;
         }
         
         /* Progress */
@@ -234,7 +214,7 @@
         
         .progress-bar {
             height: 100%;
-            width: 100%;
+            width: 3.33%;
             background-color: var(--primary);
             border-radius: var(--radius-full);
             transition: width 0.3s ease;
@@ -246,28 +226,8 @@
                 padding: var(--space-6) var(--space-4);
             }
             
-            .question {
+            .question-text {
                 font-size: 1.25rem;
-            }
-            
-            .image-options {
-                grid-template-columns: 1fr;
-                max-width: 300px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-            
-            .image-placeholder {
-                height: 160px;
-            }
-            
-            .btn-container {
-                flex-direction: column;
-                gap: var(--space-3);
-            }
-            
-            .btn {
-                width: 100%;
             }
         }
     </style>
@@ -275,8 +235,8 @@
 <body>
     <!-- Logo -->
     <div class="logo-container">
-        <a href="index.html" class="logo">
-            <img src="images/logo.svg" alt="QuizMaster Logo" class="logo-image">
+        <a href="talent-assessment.html" class="logo">
+            <img src="images/logo.svg" alt="Leadapreneur Logo" class="logo-image">
         </a>
     </div>
 
@@ -286,63 +246,85 @@
         </div>
         
         <div class="quiz-container">
-            <h1 class="question" id="question">Which style best represents your personal or professional image?</h1>
+            <h2 class="question-text">When working on a challenging project, what is your first instinct?</h2>
             
-            <div class="image-options" id="imageOptions">
-                <label class="image-option">
-                    <input type="radio" name="image-option" value="type-a">
-                    <img src="images/Mtype1.jpeg" alt="Type A" class="quiz-image">
-                    <span class="image-caption">Type A</span>
+            <div class="options" id="options">
+                <label class="option">
+                    <input type="radio" name="talent1" value="research">
+                    <span class="option-text">Research thoroughly and gather all available information</span>
                 </label>
-                <label class="image-option">
-                    <input type="radio" name="image-option" value="type-b">
-                    <img src="images/Mtype2.jpeg" alt="Type B" class="quiz-image">
-                    <span class="image-caption">Type B</span>
+                <label class="option">
+                    <input type="radio" name="talent1" value="collaborate">
+                    <span class="option-text">Collaborate with team members to brainstorm solutions</span>
                 </label>
-                <label class="image-option">
-                    <input type="radio" name="image-option" value="type-c">
-                    <img src="images/Mtype3.jpeg" alt="Type C" class="quiz-image">
-                    <span class="image-caption">Type C</span>
+                <label class="option">
+                    <input type="radio" name="talent1" value="action">
+                    <span class="option-text">Take immediate action and adjust as you learn</span>
+                </label>
+                <label class="option">
+                    <input type="radio" name="talent1" value="analyze">
+                    <span class="option-text">Break down the problem into smaller, manageable parts</span>
                 </label>
             </div>
             
             <div class="btn-container">
-                <a href="quiz4.html" class="btn btn-outline" style="margin-right: auto; background-color: transparent; border: 1px solid #E0E0E0; color: #222222; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(0, 0, 0, 0.02)'; this.style.borderColor='#81EDFF'" onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='#E0E0E0'">Previous</a>
+                <a href="talent-assessment.html" class="btn" style="background-color: transparent; border: 1px solid #E0E0E0; color: #222222;">Back to Assessment</a>
                 <button id="nextBtn" class="btn" disabled>Next</button>
             </div>
         </div>
     </div>
-    <div class="page-indicator" style="text-align: center; margin: 1.5rem auto; color: #666666; font-size: 0.9rem; max-width: 600px; padding: 0 20px;">5 of 6</div>
+    <div class="page-indicator" style="text-align: center; margin: 1.5rem auto; color: #666666; font-size: 0.9rem; max-width: 600px; padding: 0 20px;">1 of 30</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('.option');
             const nextBtn = document.getElementById('nextBtn');
             const progressBar = document.getElementById('progressBar');
-            const radioButtons = document.querySelectorAll('input[type="radio"]');
             let selectedOption = null;
 
-            // Update progress bar (5/6 steps)
-            progressBar.style.width = '83.33%';
+            // Update progress bar (1/30 steps)
+            progressBar.style.width = '3.33%';
+
+            // Get all radio buttons
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
 
             // Option selection
             radioButtons.forEach(radio => {
                 radio.addEventListener('change', function() {
-                    selectedOption = this.value;
-                    nextBtn.disabled = false;
+                    // Update selected state for all options
+                    radioButtons.forEach(rb => {
+                        const parent = rb.parentElement;
+                        if (rb === this) {
+                            parent.classList.add('selected');
+                            selectedOption = rb.value;
+                            nextBtn.disabled = false;
+                        } else {
+                            parent.classList.remove('selected');
+                        }
+                    });
+                });
+
+                // Make the entire label clickable
+                radio.closest('.option').addEventListener('click', function(e) {
+                    if (e.target !== radio) {
+                        radio.checked = true;
+                        const event = new Event('change');
+                        radio.dispatchEvent(event);
+                    }
                 });
             });
 
             // Next button click handler
             nextBtn.addEventListener('click', function() {
                 if (selectedOption) {
-                    // Get the text of the selected answer (for image options, use the caption)
-                    const selectedRadio = document.querySelector('input[name="image-option"]:checked');
-                    const answerText = selectedRadio ? selectedRadio.parentElement.querySelector('.image-caption').textContent : selectedOption;
+                    // Get the text of the selected answer
+                    const selectedRadio = document.querySelector('input[name="talent1"]:checked');
+                    const answerText = selectedRadio ? selectedRadio.parentElement.querySelector('.option-text').textContent : selectedOption;
                     
-                    // Save the answer text for dashboard tracking
-                    localStorage.setItem('q5Answer', answerText);
-                    console.log('Q5 Answer saved:', answerText);
-                    window.location.href = 'quiz7.html';
+                    // Save the answer text for assessment tracking
+                    localStorage.setItem('talent1Answer', answerText);
+                    console.log('Talent Q1 Answer saved:', answerText);
+                    window.location.href = 'talent-q2.html';
                 }
             });
         });

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talent Assessment Results - Leadapreneur</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #81EDFF;
+            --background: #EDEAE7;
+            --surface: #FFFFFF;
+            --text-primary: #222222;
+            --text-secondary: #666666;
+            --text-disabled: #BDBDBD;
+            --border: #DEDEDE;
+            --hover: #6BD9EC;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --radius-sm: 0.125rem;
+            --radius: 0.25rem;
+            --radius-md: 0.375rem;
+            --radius-lg: 0.5rem;
+            --radius-xl: 0.75rem;
+            --radius-2xl: 0.75rem;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+        
+        .logo-container {
+            text-align: center;
+            padding: 2.5rem 0 1rem;
+        }
+        
+        .logo-image {
+            height: 50px;
+            width: auto;
+        }
+        
+        .hero {
+            padding: 2.5rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+            line-height: 1.2;
+            background: linear-gradient(90deg, #222222, #666666);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 1rem;
+            line-height: 1.6;
+        }
+        
+        .results-container {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            margin: var(--space-8) 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .results-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: var(--space-4);
+        }
+        
+        .strengths-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+        }
+        
+        .strength-card {
+            background: var(--background);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .strength-card.top-strength {
+            border-color: var(--primary);
+            background: rgba(129, 237, 255, 0.1);
+        }
+        
+        .strength-icon {
+            font-size: 3rem;
+            margin-bottom: var(--space-4);
+        }
+        
+        .strength-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+            color: var(--text-primary);
+        }
+        
+        .strength-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .strength-score {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .recommendations {
+            background: var(--background);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            margin: var(--space-8) 0;
+        }
+        
+        .recommendations h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+            color: var(--text-primary);
+        }
+        
+        .recommendations ul {
+            list-style-position: inside;
+            margin-bottom: var(--space-6);
+        }
+        
+        .recommendations li {
+            margin-bottom: var(--space-2);
+            color: var(--text-secondary);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3) var(--space-6);
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            border: 1px solid transparent;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--text-primary);
+            font-weight: 800;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-secondary {
+            background-color: var(--surface);
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: var(--space-4);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: var(--space-6);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .results-container {
+                padding: var(--space-6) var(--space-4);
+            }
+            
+            .strengths-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <a href="talent-assessment.html">
+            <img src="images/logo.svg" alt="Leadapreneur Logo" class="logo-image">
+        </a>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Your Talent Assessment Results</h1>
+            <p>Congratulations on completing the comprehensive talent assessment!</p>
+            
+            <div class="results-container">
+                <div class="results-header">
+                    <div class="results-title" id="resultsTitle">Your Top Talent Strengths</div>
+                    <p>Based on your responses, here are your strongest talent areas:</p>
+                </div>
+                
+                <div class="strengths-grid" id="strengthsGrid">
+                    <!-- Strengths will be populated by JavaScript -->
+                </div>
+                
+                <div class="recommendations">
+                    <h3>Recommendations for Development</h3>
+                    <div id="recommendationsContent">
+                        <!-- Recommendations will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <a href="talent-assessment.html" class="btn btn-secondary">Retake Assessment</a>
+                <a href="index.html" class="btn btn-primary">Explore More Assessments</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Trigger confetti
+            triggerConfetti();
+            
+            // Load and display results
+            loadTalentResults();
+        });
+
+        function triggerConfetti() {
+            const duration = 3 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { 
+                startVelocity: 30, 
+                spread: 360, 
+                ticks: 60, 
+                zIndex: 0,
+                particleCount: 100,
+                origin: { y: 0.6 }
+            };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                confetti({
+                    ...defaults,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                });
+                
+                confetti({
+                    ...defaults,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                });
+            }, 250);
+        }
+
+        function loadTalentResults() {
+            const resultsData = localStorage.getItem('talentAssessmentResults');
+            
+            if (resultsData) {
+                const results = JSON.parse(resultsData);
+                displayResults(results);
+            } else {
+                // Fallback if no results found
+                displayDefaultResults();
+            }
+        }
+
+        function displayResults(results) {
+            const strengthsGrid = document.getElementById('strengthsGrid');
+            const recommendationsContent = document.getElementById('recommendationsContent');
+            
+            const strengthDefinitions = {
+                leadership: {
+                    name: 'Leadership',
+                    icon: '👑',
+                    description: 'You demonstrate strong leadership qualities and the ability to guide and inspire others toward common goals.'
+                },
+                innovation: {
+                    name: 'Innovation',
+                    icon: '💡',
+                    description: 'You excel at creative thinking and bringing fresh perspectives to solve complex problems.'
+                },
+                collaboration: {
+                    name: 'Collaboration',
+                    icon: '🤝',
+                    description: 'You work exceptionally well with others and contribute to positive team dynamics.'
+                },
+                analytical: {
+                    name: 'Analytical Thinking',
+                    icon: '📊',
+                    description: 'You have strong analytical skills and excel at data-driven decision making.'
+                },
+                communication: {
+                    name: 'Communication',
+                    icon: '💬',
+                    description: 'You communicate effectively and can convey complex ideas clearly to diverse audiences.'
+                },
+                adaptability: {
+                    name: 'Adaptability',
+                    icon: '🔄',
+                    description: 'You thrive in changing environments and quickly adjust to new situations and challenges.'
+                }
+            };
+
+            // Display strengths
+            strengthsGrid.innerHTML = '';
+            Object.entries(results.scores).forEach(([strength, score], index) => {
+                const isTopStrength = results.topStrengths.includes(strength);
+                const strengthInfo = strengthDefinitions[strength];
+                
+                const strengthCard = document.createElement('div');
+                strengthCard.className = `strength-card ${isTopStrength ? 'top-strength' : ''}`;
+                
+                strengthCard.innerHTML = `
+                    <div class="strength-icon">${strengthInfo.icon}</div>
+                    <div class="strength-score">${score}</div>
+                    <div class="strength-name">${strengthInfo.name}</div>
+                    <div class="strength-description">${strengthInfo.description}</div>
+                    ${isTopStrength ? '<div style="margin-top: 0.5rem; font-weight: 700; color: var(--primary);">⭐ Top Strength</div>' : ''}
+                `;
+                
+                strengthsGrid.appendChild(strengthCard);
+            });
+
+            // Display recommendations
+            const recommendations = generateRecommendations(results.topStrengths);
+            recommendationsContent.innerHTML = recommendations;
+        }
+
+        function displayDefaultResults() {
+            // Fallback display when no results are available
+            const strengthsGrid = document.getElementById('strengthsGrid');
+            const recommendationsContent = document.getElementById('recommendationsContent');
+            
+            strengthsGrid.innerHTML = `
+                <div class="strength-card top-strength">
+                    <div class="strength-icon">💼</div>
+                    <div class="strength-score">-</div>
+                    <div class="strength-name">Assessment Incomplete</div>
+                    <div class="strength-description">Please complete the full assessment to see your personalized results.</div>
+                </div>
+            `;
+            
+            recommendationsContent.innerHTML = `
+                <p>Complete the 30-question talent assessment to receive personalized recommendations for your professional development.</p>
+            `;
+        }
+
+        function generateRecommendations(topStrengths) {
+            const recommendations = {
+                leadership: [
+                    'Consider taking on leadership roles in projects or teams',
+                    'Develop mentoring skills to guide junior colleagues',
+                    'Explore advanced leadership training programs'
+                ],
+                innovation: [
+                    'Seek opportunities to work on creative projects',
+                    'Participate in brainstorming sessions and innovation workshops',
+                    'Consider roles that involve product development or process improvement'
+                ],
+                collaboration: [
+                    'Take on roles that require cross-functional teamwork',
+                    'Develop facilitation skills for team meetings',
+                    'Consider becoming a team liaison or project coordinator'
+                ],
+                analytical: [
+                    'Pursue advanced training in data analysis tools',
+                    'Seek roles involving strategic planning or business analysis',
+                    'Consider specialization in areas requiring deep analytical skills'
+                ],
+                communication: [
+                    'Develop presentation and public speaking skills',
+                    'Consider roles in training, consulting, or client relations',
+                    'Explore opportunities in content creation or thought leadership'
+                ],
+                adaptability: [
+                    'Seek challenging roles with frequent change',
+                    'Develop change management skills',
+                    'Consider opportunities in fast-paced or startup environments'
+                ]
+            };
+
+            let html = '<ul>';
+            topStrengths.forEach(strength => {
+                if (recommendations[strength]) {
+                    recommendations[strength].forEach(rec => {
+                        html += `<li>${rec}</li>`;
+                    });
+                }
+            });
+            html += '</ul>';
+            
+            return html;
+        }
+    </script>
+</body>
+</html>
