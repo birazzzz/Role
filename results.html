@@ -328,7 +328,8 @@
             <p>You are an Innovator.</p>
             <div class="btn-group">
                 <a href="talent-assessment.html" class="btn btn-secondary">Take Talent Capability Assessment</a>
-                <a href="index.html" class="btn btn-primary">Take Quiz Again</a>
+                <button id="avatarBtn" class="btn btn-primary">Get Your Avatar</button>
+                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
             </div>
         </div>
     </section>
@@ -438,7 +439,77 @@
                     });
                 });
             });
+            
+            // Handle avatar button click
+            const avatarBtn = document.getElementById('avatarBtn');
+            const avatarInput = document.getElementById('avatarInput');
+            
+            avatarBtn.addEventListener('click', function() {
+                avatarInput.click();
+            });
+            
+            // Handle file selection
+            avatarInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    // Check if it's an image file
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            // Save the avatar to localStorage
+                            localStorage.setItem('userAvatar', e.target.result);
+                            
+                            // Show success message
+                            alert(`Avatar "${file.name}" has been saved successfully!`);
+                            
+                            // Optional: Display the selected image immediately
+                            displayAvatar(e.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('Please select a valid image file.');
+                    }
+                }
+            });
+            
+            // Load and display existing avatar if available
+            const savedAvatar = localStorage.getItem('userAvatar');
+            if (savedAvatar) {
+                displayAvatar(savedAvatar);
+            }
         });
+        
+        // Function to display avatar
+        function displayAvatar(imageSrc) {
+            // Create or update avatar display
+            let avatarContainer = document.getElementById('avatarContainer');
+            if (!avatarContainer) {
+                avatarContainer = document.createElement('div');
+                avatarContainer.id = 'avatarContainer';
+                avatarContainer.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    width: 80px;
+                    height: 80px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    border: 3px solid var(--primary);
+                    box-shadow: var(--shadow-md);
+                    z-index: 1000;
+                    background: var(--surface);
+                `;
+                document.body.appendChild(avatarContainer);
+            }
+            
+            avatarContainer.innerHTML = `
+                <img src="${imageSrc}" alt="User Avatar" style="
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                ">
+            `;
+        }
         
         // Save quiz data for dashboard tracking
         function saveQuizData() {
