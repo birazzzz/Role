@@ -259,6 +259,33 @@
             color: var(--text-primary);
         }
         
+        /* Avatar Styles */
+        .avatar-cell {
+            text-align: center;
+            padding: var(--space-2) var(--space-3);
+        }
+        
+        .avatar-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        
+        .avatar-placeholder {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--background);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border: 2px solid var(--border);
+        }
+        
         /* Actions */
         .actions {
             display: flex;
@@ -352,6 +379,7 @@
                         <tr>
                             <th>Date</th>
                             <th>Role</th>
+                            <th>Avatar</th>
                             <th>Q1: Daily Reality</th>
                             <th>Q2: Working Style</th>
                             <th>Q3: Responsibility</th>
@@ -485,6 +513,7 @@
                         <tr>
                             <td>${date}</td>
                             <td><span class="role-badge ${roleClass}">${role}</span></td>
+                            <td class="avatar-cell">${this.getAvatarDisplay(entry)}</td>
                             <td>${entry.q1 || 'N/A'}</td>
                             <td>${entry.q2 || 'N/A'}</td>
                             <td>${entry.q3 || 'N/A'}</td>
@@ -500,6 +529,28 @@
                 }).join('');
             }
             
+            getAvatarDisplay(entry) {
+                // Check if there's avatar data in the entry
+                if (entry.avatar) {
+                    return `<img src="${entry.avatar}" alt="User Avatar" class="avatar-image">`;
+                }
+                
+                // Check localStorage for current user's avatar (fallback for older entries)
+                const savedAvatar = localStorage.getItem('userAvatar');
+                if (savedAvatar && entry.id === this.getCurrentUserId()) {
+                    return `<img src="${savedAvatar}" alt="User Avatar" class="avatar-image">`;
+                }
+                
+                // Default placeholder
+                return `<div class="avatar-placeholder">N/A</div>`;
+            }
+            
+            getCurrentUserId() {
+                // Simple way to identify if this is the current user's entry
+                // This is a simplified approach - in a real app you'd have proper user identification
+                return this.data.length > 0 ? this.data[this.data.length - 1].id : null;
+            }
+            
             exportToCSV() {
                 if (this.data.length === 0) {
                     alert('No data to export!');
@@ -507,7 +558,7 @@
                 }
                 
                 const headers = [
-                    'Date', 'Role', 'Q1: Daily Reality', 'Q2: Working Style', 
+                    'Date', 'Role', 'Avatar', 'Q1: Daily Reality', 'Q2: Working Style', 
                     'Q3: Responsibility', 'Q4: Gender', 'Q5/Q6: Style',
                     'First Name', 'Last Name', 'Email', 'Phone', 'Company'
                 ];
@@ -517,6 +568,7 @@
                     ...this.data.map(entry => [
                         new Date(entry.timestamp).toLocaleDateString(),
                         entry.role || '',
+                        entry.avatar ? 'Has Avatar' : 'No Avatar',
                         entry.q1 || '',
                         entry.q2 || '',
                         entry.q3 || '',
